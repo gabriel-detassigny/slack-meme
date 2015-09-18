@@ -10,17 +10,21 @@ module.exports = function (req, res, next) {
     };
     if (req.body.text) {
         parsed = parse(req.body.text);
-        generate(parsed, function(url) {
-            botPayload.text = url;
-            send(botPayload, function (error, status, body) {
-                if (error) {
-                    return next(error);
-                } else if (status !== 200) {
-                    return next(new Error('Incoming WebHook: ' + status + ' ' + body));
-                } else {
-                    return res.status(200).end();
-                }
-            });
+        generate(parsed, function(error, url) {
+            if (error === null) {
+                botPayload.text = url;
+                send(botPayload, function (error, status, body) {
+                    if (error) {
+                        return next(error);
+                    } else if (status !== 200) {
+                        return next(new Error('Incoming WebHook: ' + status + ' ' + body));
+                    } else {
+                        return res.status(200).end();
+                    }
+                });
+            } else {
+                return res.status(200).send(error);
+            }
         });
     } else {
       list(function (memes) {
@@ -44,7 +48,6 @@ function findMeme(memes, meme) {
             id = memes[i].id;
         }
     }
-
     return id;
 }
 
@@ -52,7 +55,7 @@ function generate(commands, callback) {
     list(function(memes) {
         var templateId = findMeme(memes, commands[0]);
         if (templateId === null) {
-            console.log('Meme not found : ' + commands[0]);
+            callback("Couldn't find any meme named \"" + commands[0] + '". \nType `/meme/` to see a list of available memes', null);
         } else {
             if (commands.length < 2) {
                 commands[1] = '';
@@ -68,7 +71,7 @@ function generate(commands, callback) {
                 password: process.env.IMGFLIP_PASSWORD
             };
             post_meme(data, function(url) {
-                callback(url);
+                callback(null, url);
             });
         }
     });
