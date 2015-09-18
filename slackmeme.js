@@ -59,6 +59,7 @@ function generate(commands, callback) {
         } else {
             if (commands.length < 2) {
                 callback("Not enough arguments! Syntax : `/meme Meme \"top text\" [\"bottom text\"]`", null);
+                return;
             }
             if (commands.length < 3) {
                 commands[2] = '';
