@@ -12,7 +12,7 @@ module.exports = function (req, res, next) {
         parsed = parse(req.body.text);
         generate(parsed, function(error, url) {
             if (error === null) {
-                botPayload.text = url;
+                botPayload.text = req.body.user_name + " : " + url;
                 send(botPayload, function (error, status, body) {
                     if (error) {
                         return next(error);
