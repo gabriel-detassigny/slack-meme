@@ -9,7 +9,7 @@ module.exports = function (req, res, next) {
         icon_emoji: ':allthethings:'
     };
     if (req.body.text) {
-        parsed = parse(req.body.text);
+        parsed = parse(req.body.text.replace('“', '"').replace('”', '"'));
         generate(parsed, function(error, url) {
             if (error === null) {
                 botPayload.text = req.body.user_name + " : " + url;
@@ -132,16 +132,12 @@ var parse = function(str) {
     var readingPart = false;
     var part = '';
     for (var i = 0; i < str.length; i++) {
-       if (str.charAt(i) === ' ' && readingPart === false) {
+       if (str.charAt(i) === ' ' && !readingPart) {
             args.push(part);
             part = '';
         } else {
-            if (str.charAt(i) === '\"' || str.charAt(i) === '\'') {
-                if (readingPart === false) {
-                    readingPart = str.charAt(i);
-                } else if (str.charAt(i) === readingPart) {
-                    readingPart = false;
-                }
+            if (str.charAt(i) === '\"') {
+                readingPart = !readingPart;
             } else {
                 part += str.charAt(i);
             }
