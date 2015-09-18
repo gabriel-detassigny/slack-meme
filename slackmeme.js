@@ -3,7 +3,7 @@ var https = require('https');
 
 module.exports = function (req, res, next) {
     var botPayload = {
-        username: 'memebot',
+        username: 'Memebot',
         channel: req.body.channel_id,
         icon_emoji: ':allthethings:'
     };
@@ -28,15 +28,6 @@ module.exports = function (req, res, next) {
           }
           botPayload.text += '```\n';
           return res.status(200).send(botPayload.text);
-        //   send(botPayload, function (error, status, body) {
-        //     if (error) {
-        //         return next(error);
-        //     } else if (status !== 200) {
-        //         return next(new Error('Incoming WebHook: ' + status + ' ' + body));
-        //     } else {
-        //         return res.status(200).end();
-        //     }
-        //   });
       });
     }
 };
@@ -83,7 +74,7 @@ var parse = function(str) {
 }
 
 function send(payload, callback) {
-    var path = '/T026MTNPZ/B0ATP0X36/pPHyA2JhblufRGRJSiISTtd0';
+    var path = process.env.SLACK_PATH;
     var uri = 'https://hooks.slack.com/services' + path;
 
     request({
