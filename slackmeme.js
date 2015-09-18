@@ -1,4 +1,5 @@
 var request = require('request');
+var querystring = require('querystring');
 var https = require('https');
 
 module.exports = function (req, res, next) {
@@ -7,18 +8,19 @@ module.exports = function (req, res, next) {
         channel: req.body.channel_id,
         icon_emoji: ':allthethings:'
     };
-    console.log(req.body);
     if (req.body.text) {
         parsed = parse(req.body.text);
-        botPayload.text = req.body.user_name + ' typed : ' + JSON.stringify(parsed);
-        send(botPayload, function (error, status, body) {
-            if (error) {
-                return next(error);
-            } else if (status !== 200) {
-                return next(new Error('Incoming WebHook: ' + status + ' ' + body));
-            } else {
-                return res.status(200).end();
-            }
+        generate(parsed, function(url) {
+            botPayload.text = url;
+            send(botPayload, function (error, status, body) {
+                if (error) {
+                    return next(error);
+                } else if (status !== 200) {
+                    return next(new Error('Incoming WebHook: ' + status + ' ' + body));
+                } else {
+                    return res.status(200).end();
+                }
+            });
         });
     } else {
       list(function (memes) {
@@ -31,6 +33,67 @@ module.exports = function (req, res, next) {
       });
     }
 };
+
+function generate(commands, callback) {
+    list(function(memes) {
+        var templateId = null;
+        for (i = 0; i< memes.length; i++) {
+            if (memes[i].name == commands[0]) {
+                templateId = memes[i].id;
+            }
+        }
+        if (templateId === null) {
+            console.log('Meme not found : ' + commands[0]);
+        } else {
+            if (commands.length < 2) {
+                commands[1] = '';
+            }
+            if (commands.length < 3) {
+                commands[2] = '';
+            }
+            var data = {
+                template_id: templateId,
+                text0: commands[1],
+                text1: commands[2],
+                username: process.env.IMGFLIP_USERNAME,
+                password: process.env.IMGFLIP_PASSWORD
+            };
+            post_meme(data, function(url) {
+                callback(url);
+            });
+        }
+    });
+}
+
+function post_meme(data, callback) {
+    data = querystring.stringify(data);
+    var options = {
+        host: 'api.imgflip.com',
+        path: '/caption_image',
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': Buffer.byteLength(data)
+        }
+    };
+    console.log('post meme');
+    var postReq = https.request(options, function(response) {
+        var body = '';
+        response.setEncoding('utf8');
+        response.on('error', function(err) {
+            console.log(err);
+        });
+        response.on('data', function(chunk) {
+            body += chunk;
+        });
+        response.on('end', function() {
+            console.log('end!');
+            body = JSON.parse(body);
+            callback(body.data.url);
+        })
+    });
+    postReq.write(data);
+}
 
 function list(callback) {
     var options = {
@@ -58,11 +121,11 @@ var parse = function(str) {
     var readingPart = false;
     var part = '';
     for (var i = 0; i < str.length; i++) {
-       if(str.charAt(i) === ' ' && !readingPart) {
+       if (str.charAt(i) === ' ' && !readingPart) {
             args.push(part);
             part = '';
         } else {
-            if(str.charAt(i) === '\"') {
+            if (str.charAt(i) === '\"') {
                 readingPart = !readingPart;
             } else {
                 part += str.charAt(i);
