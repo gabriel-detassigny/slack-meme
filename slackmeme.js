@@ -9,7 +9,7 @@ module.exports = function (req, res, next) {
         icon_emoji: ':allthethings:'
     };
     if (req.body.text) {
-        parsed = parse(req.body.text.replace('“', '"').replace('”', '"'));
+        parsed = parse(req.body.text.replace(/“/g, '"').replace(/”/g, '"'));
         generate(parsed, function(error, url) {
             if (error === null) {
                 botPayload.text = req.body.user_name + " : " + url;
