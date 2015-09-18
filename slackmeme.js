@@ -58,7 +58,7 @@ function generate(commands, callback) {
             callback("Couldn't find any meme named \"" + commands[0] + '". \nType `/meme` to see a list of available memes', null);
         } else {
             if (commands.length < 2) {
-                commands[1] = '';
+                callback("Not enough arguments! Syntax : `/meme Meme \"top text\" [\"bottom text\"]", null);
             }
             if (commands.length < 3) {
                 commands[2] = '';
