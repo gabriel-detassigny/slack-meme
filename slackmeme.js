@@ -55,7 +55,7 @@ function generate(commands, callback) {
     list(function(memes) {
         var templateId = findMeme(memes, commands[0]);
         if (templateId === null) {
-            callback("Couldn't find any meme named \"" + commands[0] + '". \nType `/meme/` to see a list of available memes', null);
+            callback("Couldn't find any meme named \"" + commands[0] + '". \nType `/meme` to see a list of available memes', null);
         } else {
             if (commands.length < 2) {
                 commands[1] = '';
