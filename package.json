@@ -9,7 +9,8 @@
   "author": "Gabriel de Tassigny",
   "license": "ISC",
   "dependencies": {
-      "express": "^4.x.x",
-      "body-parser": "^1.x.x"
+    "body-parser": "^1.x.x",
+    "express": "^4.x.x",
+    "request": "^2.62.0"
   }
 }
