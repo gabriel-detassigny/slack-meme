@@ -34,14 +34,23 @@ module.exports = function (req, res, next) {
     }
 };
 
+function findMeme(memes, meme) {
+    var id = null;
+    for (i = 0; i < memes.length; i++) {
+        if (memes[i].name.toLowerCase() == meme.toLowerCase()) {
+            return memes[i].id;
+        }
+        if (memes[i].name.toLowerCase().indexOf(meme.toLowerCase()) > -1) {
+            id = memes[i].id;
+        }
+    }
+
+    return id;
+}
+
 function generate(commands, callback) {
     list(function(memes) {
-        var templateId = null;
-        for (i = 0; i< memes.length; i++) {
-            if (memes[i].name == commands[0]) {
-                templateId = memes[i].id;
-            }
-        }
+        var templateId = findMeme(memes, commands[0]);
         if (templateId === null) {
             console.log('Meme not found : ' + commands[0]);
         } else {
@@ -76,7 +85,6 @@ function post_meme(data, callback) {
         'Content-Length': Buffer.byteLength(data)
         }
     };
-    console.log('post meme');
     var postReq = https.request(options, function(response) {
         var body = '';
         response.setEncoding('utf8');
@@ -87,7 +95,6 @@ function post_meme(data, callback) {
             body += chunk;
         });
         response.on('end', function() {
-            console.log('end!');
             body = JSON.parse(body);
             callback(body.data.url);
         })
