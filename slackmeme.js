@@ -132,12 +132,16 @@ var parse = function(str) {
     var readingPart = false;
     var part = '';
     for (var i = 0; i < str.length; i++) {
-       if (str.charAt(i) === ' ' && !readingPart) {
+       if (str.charAt(i) === ' ' && readingPart === false) {
             args.push(part);
             part = '';
         } else {
-            if (str.charAt(i) === '\"') {
-                readingPart = !readingPart;
+            if (str.charAt(i) === '\"' || str.charAt(i) === '\'') {
+                if (readingPart === false) {
+                    readingPart = str.charAt(i);
+                } else if (str.charAt(i) === readingPart) {
+                    readingPart = false;
+                }
             } else {
                 part += str.charAt(i);
             }
