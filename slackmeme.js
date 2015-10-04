@@ -148,8 +148,7 @@ var parse = function(str) {
 }
 
 function send(payload, callback) {
-    var path = process.env.SLACK_PATH;
-    var uri = 'https://hooks.slack.com/services' + path;
+    var uri = process.env.SLACK_URL;
 
     request({
         uri: uri,
