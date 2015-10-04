@@ -28,15 +28,30 @@ module.exports = function (req, res, next) {
         });
     } else {
       list(function (memes) {
-          botPayload.text = '```\nAvailable Memes :\n';
-          for (i = 0; i < memes.length; i++) {
-              botPayload.text += memes[i].name + '\n';
-          }
-          botPayload.text += '```\n';
+          botPayload.text = orderList(memes);
           return res.status(200).send(botPayload.text);
       });
     }
 };
+
+function orderList(memes) {
+    memes.sort(function(a, b) {
+        if (a.name < b.name) {
+            return -1;
+        }
+        if (a.name > b.name) {
+            return 1;
+        }
+        return 0;
+    });
+
+    var text = '```\nAvailable Memes :\n';
+    for (i = 0; i < memes.length; i++) {
+        text += memes[i].name + '\n';
+    }
+    text += '```\n';
+    return text;
+}
 
 function findMeme(memes, meme) {
     var id = null;
