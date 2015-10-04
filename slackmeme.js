@@ -45,7 +45,7 @@ function orderList(memes) {
         return 0;
     });
 
-    var text = '```\nAvailable Memes :\n';
+    var text = 'Available Memes :\n```\n';
     for (i = 0; i < memes.length; i++) {
         text += memes[i].name + '\n';
     }
