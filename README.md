@@ -16,7 +16,7 @@ Therefore, you will need to create an account on their site to set up and use th
 
 This can be hosted on anything, and just require to have it accessible online by Slack.
 
-I used [Heroku](heroku.com) to host mine, as it's easy to configure and free!
+I used [Heroku](https://heroku.com) to host mine, as it's easy to configure and free!
 
 The Slack meme script needs to access Imgflip's account credentials. Therefore, you have to set these following environment variables :
 - *IMGFLIP_USERNAME*
