@@ -4,6 +4,8 @@ This is a slack bot that can generate memes.
 
 This was done as part of a Hackday.
 
+![Screenshot](images/example-success-kid.png)
+
 ## Content
 
 This uses [Imgflip](https://imgflip.com/)'s public API.
@@ -50,3 +52,9 @@ Now, you can generate and post memes to Slack! Pretty neat, right?
 Simply type : `/meme "meme name" "top text" "bottom text"`
 
 If you want to see the list of available memes, type : `/meme` without arguments.
+
+### Example
+
+![Screenshot](images/example-fry-usage.png)
+
+![Screenshot](images/example-fry-result.png)
