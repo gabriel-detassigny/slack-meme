@@ -147,7 +147,7 @@ var parse = function(str) {
     var readingPart = false;
     var part = '';
 
-    str.replace(/“/g, '"').replace(/”/g, '"');
+    var str = str.replace(/“/g, '"').replace(/”/g, '"');
     for (var i = 0; i < str.length; i++) {
        if (str.charAt(i) === ' ' && !readingPart) {
             args.push(part);
