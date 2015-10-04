@@ -42,3 +42,11 @@ Configuration parameter :
 - URL: Set the URL that point to your live version of that script, with /meme at the end.
 - Method: POST
 - Usage hint : "meme name"  "top text"  ["bottom text"]
+
+## Usage
+
+Now, you can generate and post memes to Slack! Pretty neat, right?
+
+Simply type : `/meme "meme name" "top text" "bottom text"`
+
+If you want to see the list of available memes, type : `/meme` without arguments.
