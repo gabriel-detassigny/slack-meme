@@ -9,7 +9,7 @@ module.exports = function (req, res, next) {
         icon_emoji: ':slack:'
     };
     if (req.body.text) {
-        parsed = parse(req.body.text.replace(/“/g, '"').replace(/”/g, '"'));
+        parsed = parse(req.body.text);
         generate(parsed, function(error, url) {
             if (error === null) {
                 botPayload.text = req.body.user_name + " : " + url;
@@ -146,6 +146,8 @@ var parse = function(str) {
     var args = [];
     var readingPart = false;
     var part = '';
+
+    str.replace(/“/g, '"').replace(/”/g, '"');
     for (var i = 0; i < str.length; i++) {
        if (str.charAt(i) === ' ' && !readingPart) {
             args.push(part);
