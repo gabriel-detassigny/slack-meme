@@ -6,7 +6,7 @@ module.exports = function (req, res, next) {
     var botPayload = {
         username: 'Memebot',
         channel: req.body.channel_id,
-        icon_emoji: ':allthethings:'
+        icon_emoji: ':slack:'
     };
     if (req.body.text) {
         parsed = parse(req.body.text.replace(/“/g, '"').replace(/”/g, '"'));
