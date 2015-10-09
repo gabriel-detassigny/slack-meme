@@ -1,6 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var slackmeme = require('./slackmeme');
+var slackbot = require('./slackbot');
 
 var app = express();
 var port = process.env.PORT || 3000;
@@ -21,4 +21,4 @@ app.listen(port, function () {
   console.log('Slack bot listening on port ' + port);
 });
 
-app.post('/meme', slackmeme);
+app.post('/meme', slackbot);
