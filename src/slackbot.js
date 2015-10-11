@@ -9,7 +9,7 @@ module.exports = function (req, res, next) {
         icon_emoji: ':slack:'
     };
     if (req.body.text) {
-        parsed = parse(req.body.text);
+        parsed = parseCommand(req.body.text);
         generate(parsed, function(error, url) {
             if (error === null) {
                 botPayload.text = req.body.user_name + " : " + url;
@@ -116,7 +116,7 @@ function post_meme(data, callback) {
         response.on('end', function() {
             body = JSON.parse(body);
             callback(body.data.url);
-        })
+        });
     });
     postReq.write(data);
 }
@@ -142,12 +142,12 @@ function list(callback) {
     });
 }
 
-var parse = function(str) {
+function parseCommand(str) {
     var args = [];
     var readingPart = false;
     var part = '';
 
-    var str = str.replace(/“/g, '"').replace(/”/g, '"');
+    str = str.replace(/“/g, '"').replace(/”/g, '"');
     for (var i = 0; i < str.length; i++) {
        if (str.charAt(i) === ' ' && !readingPart) {
             args.push(part);
